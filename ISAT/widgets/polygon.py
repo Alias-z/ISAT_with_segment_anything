@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt6 import QtCore, QtWidgets, QtGui
 from ISAT.annotation import Object
 import typing
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode

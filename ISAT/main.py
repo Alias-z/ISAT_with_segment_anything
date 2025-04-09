@@ -2,7 +2,7 @@
 # @Author  : LG
 # import os
 
-from PyQt5 import QtWidgets
+from PyQt6 import QtWidgets
 from ISAT.widgets.mainwindow import MainWindow
 import sys
 
@@ -15,7 +15,7 @@ def main():
     app = QtWidgets.QApplication([''])
     mainwindow = MainWindow()
     mainwindow.show()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     main()

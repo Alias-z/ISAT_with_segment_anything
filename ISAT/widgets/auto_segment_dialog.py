@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6 import QtWidgets, QtCore, QtGui
+from PyQt6.QtCore import QThread, pyqtSignal
 from ISAT.ui.auto_segment import Ui_Dialog
 from ISAT.configs import CONTOURMode
 from xml.etree import ElementTree as ET

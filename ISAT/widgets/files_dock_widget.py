@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtWidgets, QtCore, QtGui
 from ISAT.ui.file_dock import Ui_Form
 import os
 

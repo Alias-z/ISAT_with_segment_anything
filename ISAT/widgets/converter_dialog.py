@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6 import QtWidgets, QtCore
+from PyQt6.QtCore import QThread, pyqtSignal
 from ISAT.ui.Converter_dialog import Ui_Dialog
 from ISAT.scripts.isat import ISAT
 from ISAT.scripts.coco import COCO

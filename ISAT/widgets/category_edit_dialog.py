@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 from ISAT.ui.category_edit import Ui_Dialog
 
 

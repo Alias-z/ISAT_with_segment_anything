@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 from ISAT.ui.setting_dialog import Ui_Dialog
 
 class SettingDialog(QtWidgets.QDialog, Ui_Dialog):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtWidgets, QtCore, QtGui
 from ISAT.ui.category_dock import Ui_Form
 from fuzzywuzzy import process
 import functools
@@ -26,7 +26,7 @@ class CategoriesDockWidget(QtWidgets.QWidget, Ui_Form):
 
         self.category_choice_shortcuts = {}
         for i in range(10):
-            shortcut = QtWidgets.QShortcut(QtGui.QKeySequence("{}".format(i)), self)
+            shortcut = QtGui.QShortcut(QtGui.QKeySequence("{}".format(i)), self)
             shortcut.activated.connect(self.choice_category)
             self.category_choice_shortcuts[shortcut] = i-1 if i != 0 else 9
 

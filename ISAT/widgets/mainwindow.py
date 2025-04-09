@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt6 import QtWidgets, QtCore, QtGui
 from ISAT.ui.MainWindow import Ui_MainWindow
 from ISAT.widgets.category_setting_dialog import CategorySettingDialog
 from ISAT.widgets.category_edit_dialog import CategoryEditDialog
@@ -30,7 +30,7 @@ import imgviz
 from ISAT.segment_any.segment_any import SegAny, SegAnyVideo
 from ISAT.segment_any.gpu_resource import GPUResource_Thread, osplatform
 import ISAT.icons_rc
-from PyQt5.QtCore import QThread, pyqtSignal
+from PyQt6.QtCore import QThread, pyqtSignal
 import numpy as np
 import torch
 import cv2  # 调整图像饱和度
@@ -421,7 +421,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if not self.saved:
             result = QtWidgets.QMessageBox.question(self, 'Warning', 'Proceed without saved?', QtWidgets.QMessageBox.StandardButton.Yes|QtWidgets.QMessageBox.StandardButton.No, QtWidgets.QMessageBox.StandardButton.No)
             if result == QtWidgets.QMessageBox.StandardButton.No:
-                if isinstance(self.sender(), QtWidgets.QAction):
+                if isinstance(self.sender(), QtGui.QAction):
                     self.sender().setChecked(False)
                 return
         if model_name is None:
@@ -436,7 +436,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.seganythread.wait()
             self.seganythread.results_dict.clear()
         except:
-            if isinstance(self.sender(), QtWidgets.QAction):
+            if isinstance(self.sender(), QtGui.QAction):
                 self.sender().setChecked(False)
 
         if model_name == '':
@@ -706,7 +706,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         # 右侧工具栏，添加弹性空间
         spacer = QtWidgets.QWidget()
-        spacer.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        spacer.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         self.toolBar_2.insertWidget(self.actionLanguage, spacer)
 
         self.trans = QtCore.QTranslator()
@@ -742,7 +742,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.trans.load(os.path.join(ISAT_ROOT, 'ui/en'))
         language_icon = QtGui.QIcon()
         icon_path = ":/icon/icons/中文_chinese.svg" if language == 'en' else ":/icon/icons/英文_english.svg"
-        language_icon.addPixmap(QtGui.QPixmap(icon_path), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        language_icon.addPixmap(QtGui.QPixmap(icon_path), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionLanguage.setIcon(language_icon)
         language_tool_tip = '中文' if language == 'en' else 'English'
         self.actionLanguage.setToolTip(language_tool_tip)
@@ -1130,7 +1130,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVisible.setEnabled(False)
         self.map_mode = MAPMode.SEMANTIC
         semantic_icon = QtGui.QIcon()
-        semantic_icon.addPixmap(QtGui.QPixmap(":/icon/icons/semantic.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        semantic_icon.addPixmap(QtGui.QPixmap(":/icon/icons/semantic.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionBit_map.setIcon(semantic_icon)
 
     def change_bit_map_to_instance(self):
@@ -1159,7 +1159,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVisible.setEnabled(False)
         self.map_mode = MAPMode.INSTANCE
         instance_icon = QtGui.QIcon()
-        instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        instance_icon.addPixmap(QtGui.QPixmap(":/icon/icons/instance.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionBit_map.setIcon(instance_icon)
 
     def change_bit_map_to_label(self):
@@ -1182,7 +1182,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.actionVisible.setEnabled(True)
         self.map_mode = MAPMode.LABEL
         label_icon = QtGui.QIcon()
-        label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        label_icon.addPixmap(QtGui.QPixmap(":/icon/icons/照片_pic.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.actionBit_map.setIcon(label_icon)
 
     def change_bit_map(self):
@@ -1290,7 +1290,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             hsv_image[:, :, 1] = np.clip(hsv_image[:, :, 1] * saturation_scale, 0, 255)
             image_hsv = cv2.cvtColor(hsv_image, cv2.COLOR_HSV2RGB)
             height, width, channels = self.scene.image_data.shape
-            pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(image_hsv.data, width, height, channels * width, QtGui.QImage.Format_RGB888))
+            pixmap = QtGui.QPixmap.fromImage(QtGui.QImage(image_hsv.data, width, height, channels * width, QtGui.QImage.Format.Format_RGB888))
             self.scene.image_item.setPixmap(pixmap)
         else:
             print('Image data not loaded in AnnotationScene')
@@ -1367,7 +1367,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.scene.guide_line_x.setVisible(False)
                 self.scene.guide_line_y.setVisible(False)
             except: pass
-            image = QtGui.QImage(self.scene.sceneRect().size().toSize(), QtGui.QImage.Format_ARGB32)
+            image = QtGui.QImage(self.scene.sceneRect().size().toSize(), QtGui.QImage.Format.Format_ARGB32)
             painter = QtGui.QPainter(image)
             self.scene.render(painter)
             painter.end()
@@ -1378,7 +1378,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.scene.guide_line_y.setVisible(True)
             except: pass
         elif type == 'window':
-            image = QtGui.QImage(self.size(), QtGui.QImage.Format_ARGB32)
+            image = QtGui.QImage(self.size(), QtGui.QImage.Format.Format_ARGB32)
             painter = QtGui.QPainter(image)
             self.render(painter)
             painter.end()

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # @Author  : LG
 
-from PyQt5 import QtWidgets, QtGui, QtCore
+from PyQt6 import QtWidgets, QtGui, QtCore
 from ISAT.widgets.polygon import Polygon, Vertex, PromptPoint, Line, Rect
 from ISAT.configs import STATUSMode, CLICKMode, DRAWMode, CONTOURMode
 import numpy as np
@@ -1026,7 +1026,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
             mask_image = np.zeros(self.image_data.shape, dtype=np.uint8)
             mask_image = cv2.addWeighted(self.image_data, 1, mask_image, 0, 0)
         mask_image = QtGui.QImage(mask_image[:], mask_image.shape[1], mask_image.shape[0], mask_image.shape[1] * 3,
-                                  QtGui.QImage.Format_RGB888)
+                                  QtGui.QImage.Format.Format_RGB888)
         mask_pixmap = QtGui.QPixmap(mask_image)
         if self.mask_item is not None:
             self.mask_item.setPixmap(mask_pixmap)
@@ -1072,7 +1072,7 @@ class AnnotationView(QtWidgets.QGraphicsView):
     def wheelEvent(self, event: QtGui.QWheelEvent):
         angel = event.angleDelta()
         angelX, angelY = angel.x(), angel.y()
-        point = event.pos()  # 当前鼠标位置
+        point = event.position().toPoint()  # 当前鼠标位置
         if angelY > 0:
             self.zoom(self.factor, point)
         else:
