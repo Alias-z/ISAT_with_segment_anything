@@ -108,12 +108,14 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.group = 0
         self.iscrowd = 0
         self.note = ''
+        self.area = 0
 
         self.rxmin, self.rxmax, self.rymin, self.rymax = 0, 0, 0, 0 # 用于绘画完成后，记录多边形的各边界，此处与points对应
         self.color = QtGui.QColor('#ff0000')
         self.is_drawing = True
-
-        self.setPen(QtGui.QPen(self.color, self.line_width))
+        pen = QtGui.QPen(self.color, self.line_width)
+        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.setPen(pen)
         self.setBrush(QtGui.QBrush(self.color, QtCore.Qt.BrushStyle.FDiagPattern))
 
         self.setAcceptHoverEvents(True)
@@ -136,6 +138,8 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         self.points[index] = self.mapFromScene(point)
 
         self.redraw()
+        if self.scene().mainwindow.cfg['software']['real_time_area']:
+            self.area = self.calculate_area()
         if self.scene().mainwindow.load_finished and not self.is_drawing:
             self.scene().mainwindow.set_saved_state(False)
 
@@ -277,6 +281,7 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
             self.addPoint(point)
         color = self.scene().mainwindow.category_color_dict.get(object.category, '#000000')
         self.set_drawed(object.category, object.group, object.iscrowd, object.note, QtGui.QColor(color), object.layer)  # ...
+        self.area = object.area
 
     def to_object(self):
         if self.is_drawing:
@@ -290,8 +295,11 @@ class Polygon(QtWidgets.QGraphicsPolygonItem):
         xmax = xmin + self.boundingRect().width()
         ymax = ymin + self.boundingRect().height()
 
+        if not self.scene().mainwindow.cfg['software']['real_time_area'] or self.area == 0:
+            self.area = self.calculate_area()
+
         object = Object(self.category, group=self.group, segmentation=segmentation,
-                        area=self.calculate_area(), layer=self.zValue(), bbox=(xmin, ymin, xmax, ymax), iscrowd=self.iscrowd, note=self.note)
+                        area=self.area, layer=self.zValue(), bbox=(xmin, ymin, xmax, ymax), iscrowd=self.iscrowd, note=self.note)
         return object
 
 
@@ -352,6 +360,10 @@ class Line(QtWidgets.QGraphicsPathItem):
         self.points = []
         self.vertexs = []
         self.color = QtGui.QColor('#ff0000')
+        pen = QtGui.QPen(self.color, self.line_width)
+        pen.setStyle(QtCore.Qt.PenStyle.DotLine)
+        self.setPen(pen)
+        self.setZValue(1e5)
 
     def addPoint(self, point):
         self.points.append(point)

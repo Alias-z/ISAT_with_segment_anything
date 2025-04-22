@@ -189,9 +189,9 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         self.mode = STATUSMode.REPAINT
         self.repaint_start_vertex = None
         self.repaint_end_vertex = None
-
-        self.current_line = Line()  # 重绘部分，由起始点开始的线段显示
-        self.addItem(self.current_line)
+        if self.current_line is None:
+            self.current_line = Line()  # 重绘部分，由起始点开始的线段显示
+            self.addItem(self.current_line)
 
         if self.image_item is not None:
             self.image_item.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.CrossCursor))
@@ -882,6 +882,7 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
 
                     self.current_line.delete()  # 清除所有路径
                     self.removeItem(self.current_line)
+                    self.current_line = None
 
                     self.repaint_start_vertex = None
                     self.repaint_end_vertex = None
@@ -932,13 +933,17 @@ class AnnotationScene(QtWidgets.QGraphicsScene):
         if self.mode == STATUSMode.REPAINT:
             self.current_line.movePoint(len(self.current_line.points) - 1, pos)
 
+        pen = QtGui.QPen()
+        pen.setStyle(QtCore.Qt.PenStyle.DashLine)
         # 辅助线
         if self.guide_line_x is None and self.width() > 0 and self.height() > 0:
             self.guide_line_x = QtWidgets.QGraphicsLineItem(QtCore.QLineF(pos.x(), 0, pos.x(), self.height()))
+            self.guide_line_x.setPen(pen)
             self.guide_line_x.setZValue(1)
             self.addItem(self.guide_line_x)
         if self.guide_line_y is None and self.width() > 0 and self.height() > 0:
             self.guide_line_y = QtWidgets.QGraphicsLineItem(QtCore.QLineF(0, pos.y(), self.width(), pos.y()))
+            self.guide_line_y.setPen(pen)
             self.guide_line_y.setZValue(1)
             self.addItem(self.guide_line_y)
 
