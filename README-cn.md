@@ -22,10 +22,31 @@
 - &#x1F389;: **新功能**: **现在我们支持服务器运算模型 + 本地GUI操作了！** 
 请查阅我们最新的[中文文档](https://isat-samzh.readthedocs.io/zh-cn/latest/) (待更新，先看英文文档吧😄)
 
+## 安装
+- 新建conda环境（推荐，可选）
+```shell
+# 创建环境
+conda create -n isat_env python=3.8
+
+# 激活环境
+conda activate isat_env
+```
+
+- 安装
+```shell
+pip install isat-sam
+```
+
+- 运行
+```shell
+isat-sam
+```
+
 # Star History
 
 **请给该项目一个star，您的点赞就是对我最大的支持与鼓励**
 [![Star History Chart](https://api.star-history.com/svg?repos=yatengLG/ISAT_with_segment_anything&type=Date)](https://star-history.com/#yatengLG/ISAT_with_segment_anything&Date)
+
 
 # 核心贡献者
 
@@ -42,7 +63,6 @@
     <td><a href="https://github.com/yatengLG/ISAT_with_segment_anything/graphs/contributors">...</a>
 </tr>
 </table>
-
 
 
 # 引用
