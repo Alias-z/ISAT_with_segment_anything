@@ -9,7 +9,6 @@ import platform
 from PIL import Image
 from collections import OrderedDict
 import os
-from skimage.draw.draw import polygon
 from ISAT.segment_any.sam2.utils.misc import AsyncVideoFrameLoader
 
 osplatform = platform.system()
@@ -113,7 +112,7 @@ class SegAny:
         self.image = None
 
     def set_image(self, image):
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
             self.image = image
             self.predictor_with_point_prompt.set_image(image)
 
@@ -123,7 +122,7 @@ class SegAny:
         torch.cuda.empty_cache()
 
     def predict_with_point_prompt(self, input_point, input_label):
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
 
             if 'sam2' not in self.model_type:
                 input_point = np.array(input_point)
@@ -151,7 +150,7 @@ class SegAny:
             return masks
 
     def predict_with_box_prompt(self, box):
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
             masks, scores, logits = self.predictor_with_point_prompt.predict(
                 box=box,
                 multimask_output=False,
@@ -210,7 +209,7 @@ class SegAnyVideo:
             offload_state_to_cpu=True,
             async_loading_frames=False,
     ):
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
 
             img_mean = (0.485, 0.456, 0.406)
             img_std = (0.229, 0.224, 0.225)
@@ -342,7 +341,7 @@ class SegAnyVideo:
         return img, video_height, video_width
 
     def add_new_mask(self, frame_idx, ann_obj_id, mask):
-        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype):
+        with torch.inference_mode(), torch.autocast(self.device, dtype=self.model_dtype, enabled=torch.cuda.is_available()):
             self.predictor.add_new_mask(
                 inference_state=self.inference_state,
                 frame_idx=frame_idx,
