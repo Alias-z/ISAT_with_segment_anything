@@ -36,9 +36,9 @@ from PyQt5.QtCore import QThread, pyqtSignal
 import numpy as np
 import torch
 import cv2  # 调整图像饱和度
-import datetime
 from skimage.draw.draw import polygon
 import requests
+import orjson
 
 
 class QtBoxStyleProgressBar(QtWidgets.QProgressBar):
@@ -93,9 +93,11 @@ class SegAnyThread(QThread):
             )
 
             if response.status_code == 200:
-                features = response.json()['features']
-                original_size = tuple(response.json()['original_size'])
-                input_size = tuple(response.json()['input_size'])
+                data = orjson.loads(response.content)
+                features = data["features"]
+                original_size = data["original_size"]
+                input_size = data["input_size"]
+
                 dtype = self.mainwindow.segany.model_dtype
                 device = self.mainwindow.segany.device
 
@@ -498,7 +500,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.use_remote_sam:
             sam_video_tag = False
 
-        print('sam_tag:', sam_tag, 'sam_video_tag: ', sam_video_tag)
+        print('sam_tag:', f'\033[32m{sam_tag}\033[0m' if sam_tag else f'\033[31m{sam_tag}\033[0m',
+              'sam_video_tag: ', f'\033[32m{sam_video_tag}\033[0m' if sam_video_tag else f'\033[31m{sam_video_tag}\033[0m')
         self.setEnabled(True)
         if sam_video_tag:
             self.use_segment_anything_video = True
